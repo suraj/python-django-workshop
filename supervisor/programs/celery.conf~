@@ -1,0 +1,27 @@
+
+[program:celerybeat]
+command=/home/freeman/.virtualenvs/default/bin/celery beat --app demo --schedule=/tmp/beat.db --pidfile=/tmp/celerybeat.pid --loglevel=INFO
+directory=/home/freeman/Workshop/django/
+user=www-data
+numprocs=1
+stdout_logfile=/tmp/celerybeat.log
+redirect_stderr=true
+autostart=true
+autorestart=true
+startsecs=2
+stopwaitsecs = 2
+priority=999
+
+[program:celeryworker]
+command=/home/freeman/.virtualenvs/default/bin/celery worker --app demo --events --loglevel=INFO --concurrency=4 --hostname=%(program_name)s
+directory=/home/freeman/Workshop/django/
+user=www-data
+numprocs=1
+stdout_logfile=/tmp/%(program_name)s_%(process_num)02d.log
+redirect_stderr=true
+autostart=true
+autorestart=true
+startsecs=2
+stopwaitsecs = 60
+priority=998
+
